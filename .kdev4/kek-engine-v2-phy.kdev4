@@ -1,0 +1,131 @@
+[Buildset]
+BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00"\x00k\x00e\x00k\x00-\x00e\x00n\x00g\x00i\x00n\x00e\x00-\x00v\x002\x00-\x00p\x00h\x00y)
+
+[CustomBuildSystem]
+CurrentConfiguration=BuildConfig0
+
+[CustomBuildSystem][BuildConfig0]
+BuildDir=file:///root/projects/kek-engine-v2-phy/build
+Title=build
+
+[CustomBuildSystem][BuildConfig0][ToolBuild]
+Arguments=all
+Enabled=true
+Environment=
+Executable=file:make
+Type=0
+
+[CustomBuildSystem][BuildConfig0][ToolClean]
+Arguments=clean
+Enabled=true
+Environment=
+Executable=file:make
+Type=3
+
+[CustomBuildSystem][BuildConfig0][ToolConfigure]
+Arguments=
+Enabled=false
+Environment=
+Executable=
+Type=1
+
+[CustomBuildSystem][BuildConfig0][ToolInstall]
+Arguments=
+Enabled=false
+Environment=
+Executable=
+Type=2
+
+[CustomBuildSystem][BuildConfig0][ToolPrune]
+Arguments=
+Enabled=false
+Environment=
+Executable=
+Type=4
+
+[CustomBuildSystem][BuildConfig1]
+BuildDir=file:///root/projects/kek-engine-v2-phy/build
+Title=clean
+
+[CustomBuildSystem][BuildConfig1][ToolBuild]
+Arguments=clean
+Enabled=true
+Environment=
+Executable=file:make
+Type=0
+
+[CustomBuildSystem][BuildConfig1][ToolClean]
+Arguments=clean
+Enabled=true
+Environment=
+Executable=file:make
+Type=3
+
+[CustomBuildSystem][BuildConfig1][ToolConfigure]
+Arguments=
+Enabled=false
+Environment=
+Executable=
+Type=1
+
+[CustomBuildSystem][BuildConfig1][ToolInstall]
+Arguments=
+Enabled=false
+Environment=
+Executable=
+Type=2
+
+[CustomBuildSystem][BuildConfig1][ToolPrune]
+Arguments=
+Enabled=false
+Environment=
+Executable=
+Type=4
+
+[CustomDefinesAndIncludes][ProjectPath0]
+Path=.
+parseAmbiguousAsCPP=true
+parserArguments=-ferror-limit=100 -fspell-checking -Wdocumentation -Wunused-parameter -Wunreachable-code -Wall -std=c++11
+parserArgumentsC=-ferror-limit=100 -fspell-checking -Wdocumentation -Wunused-parameter -Wunreachable-code -Wall -std=c99
+
+[CustomDefinesAndIncludes][ProjectPath0][Compiler]
+Name=Clang
+
+[CustomDefinesAndIncludes][ProjectPath0][Includes]
+1=/root/projects/kek-engine-v2-phy/SDL2/include
+2=/root/projects/kek-engine-v2-phy/SDL2_image
+3=/root/projects/kek-engine-v2-phy/glm/glm
+4=/root/projects/kek-engine-v2-phy/glm/glm/gtc
+5=/root/projects/kek-engine-v2-phy/glm/glm/gtx
+6=/root/projects/kek-engine-v2-phy/glm/glm/detail
+7=/root/projects/kek-engine-v2-phy/glm/glm/simd
+8=/root/projects/kek-engine-v2-phy
+
+[Launch]
+Launch Configurations=Launch Configuration 0
+
+[Launch][Launch Configuration 0]
+Configured Launch Modes=execute
+Configured Launchers=nativeAppLauncher
+Name=New Compiled Binary Launcher
+Type=Native Application
+
+[Launch][Launch Configuration 0][Data]
+Arguments=
+Debugger Shell=
+Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x00)
+Dependency Action=Nothing
+Display Demangle Names=true
+Display Static Members=false
+EnvironmentGroup=
+Executable=file:///root/projects/kek-engine-v2-phy/bin/kek-engine-v2
+External Terminal=konsole --noclose --workdir %workdir -e %exe
+GDB Path=
+Project Target=
+Remote GDB Config Script=
+Remote GDB Run Script=
+Remote GDB Shell Script=
+Start With=ApplicationOutput
+Use External Terminal=false
+Working Directory=file:///root/projects/kek-engine-v2-phy/bin
+isExecutable=true
