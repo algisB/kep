@@ -100,6 +100,7 @@ Name=Clang
 6=/root/projects/kek-engine-v2-phy/glm/glm/detail
 7=/root/projects/kek-engine-v2-phy/glm/glm/simd
 8=/root/projects/kek-engine-v2-phy
+9=/root/projects/kek-engine-v2-phy/kep
 
 [Launch]
 Launch Configurations=Launch Configuration 0
@@ -129,3 +130,6 @@ Start With=ApplicationOutput
 Use External Terminal=false
 Working Directory=file:///root/projects/kek-engine-v2-phy/bin
 isExecutable=true
+
+[Project]
+VersionControlSupport=kdevgit

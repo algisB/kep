@@ -3,7 +3,8 @@
 #include <iostream>
 #include "SETTINGS.h"
 
-Scene::Scene(SDL_Window *_window, int _winWidth, int _winHeight, InputManager * _inputManager, EventHandler * _eventHandler)
+Scene::Scene(SDL_Window *_window, int _winWidth, int _winHeight, InputManager * _inputManager, 
+EventHandler * _eventHandler)
 {
 	
 	this->window = _window; 
@@ -120,7 +121,6 @@ Scene::Scene(SDL_Window *_window, int _winWidth, int _winHeight, InputManager * 
 	
     ///////////////////////////////////////////
     
-    
     tgo = new GameObject("nav mesh");
 	cube[3] = tgo;
 	tgo->attachComponent(new Transform(tgo, "transform", &_mainCam->m_viewMatrix, &_mainCam->m_projectionMatrix));
@@ -131,6 +131,17 @@ Scene::Scene(SDL_Window *_window, int _winWidth, int _winHeight, InputManager * 
 	tgo->attachComponent(new Material(tgo, "material", &_texture));
 	tgo->attachComponent(new MeshRenderer(tgo, "meshRenderer", _navMesh, shaderProgramSimple, MeshRenderer::WIRE));
 	gameObjects.push_back(tgo);
+    
+    pfr = new Kep::ParticleForceRegistry();
+    
+    pgg = new Kep::ParticleGravity(Kep::Vector3(0.0f, -9.81f, 0.0f));
+    
+    
+    
+    part = new Kep::Particle(Kep::Vector3(0.0f,0.0f,0.0f), 1.0f, 0.9f);
+    pfr->add(part, pgg);
+    part->addForce(Kep::Vector3(100.0f, 400.0f, 100.0f));
+    
 }
 
 Scene::~Scene()
@@ -212,28 +223,10 @@ void Scene::Update(float _deltaTs)
 	
 	float moveSpeed = 10.0f;
 
-// 	if (state[SDL_SCANCODE_W])
-// 	{
-// 		//printf("W pressed \n");			
-// 		_mainCam->m_transform->m_localPosition += _deltaTs *  glm::normalize(_mainCam->m_cameraFront) *moveSpeed;
-// 	}
-// 
-// 	if (state[SDL_SCANCODE_S])
-// 	{
-// 		_mainCam->m_transform->m_localPosition -= _deltaTs * _mainCam->m_cameraFront *moveSpeed;
-// 	}
-// 
-// 	if (state[SDL_SCANCODE_D])
-// 	{
-// 		glm::vec3 tempSide = glm::cross(UP, _mainCam->m_cameraFront);
-// 		_mainCam->m_transform->m_localPosition -= _deltaTs *tempSide*moveSpeed;
-// 	}
-// 	if (state[SDL_SCANCODE_A])
-// 	{
-// 		glm::vec3 tempSide = glm::cross(UP, _mainCam->m_cameraFront);
-// 		_mainCam->m_transform->m_localPosition += _deltaTs *tempSide*moveSpeed;
-// 	}
-
+    pfr->updateForces(_deltaTs);
+    part->integrate(_deltaTs);
+    //part->m_velocity.dump();
+    cube[3]->getComponent<Transform>()->m_localPosition = glm::vec3(part->m_position.m_x, part->m_position.m_y, part->m_position.m_z);
 }
 
 void Scene::Draw()

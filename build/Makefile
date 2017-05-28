@@ -34,24 +34,27 @@ ShaderManager.o : ../ShaderManager.cpp
 	
 Particle.o : ../kep/Particle.cpp
 	$(CC) -c ../kep/Particle.cpp -I ../
+	
 Core.o : ../kep/Core.cpp
 	$(CC) -c ../kep/Core.cpp -I ../
 	
+PfGen.o : ../kep/PfGen.cpp
+	$(CC) -c ../kep/PfGen.cpp -I ../
 #-------------------------------------------------------------
 
 Scene.o : ../Scene.cpp
-	$(CC) -c ../Scene.cpp -I ../ -I ../SDL2/include -I ../glm/glm -I ../glm/glm/gtc -I ../glm/glm/gtx -I ../SDL2_image
+	$(CC) -c ../Scene.cpp -I ../ -I ../SDL2/include -I ../glm/glm -I ../glm/glm/gtc -I ../glm/glm/gtx -I ../SDL2_image -I ../kep/
 
 glew.o : ../glew.c
 	clang -c ../glew.c -I ../
 
 Main.o : ../Main.cpp
-	$(CC) -c ../Main.cpp -I ../ -I ../SDL2/include -I ../glm/glm -I ../glm/glm/gtc -I ../glm/glm/gtx -I ../SDL2_image
+	$(CC) -c ../Main.cpp -I ../ -I ../SDL2/include -I ../glm/glm -I ../glm/glm/gtc -I ../glm/glm/gtx -I ../SDL2_image -I ../kep/
 
 
 #linking
-all: Main.o glew.o Scene.o  InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o
-	$(CC) -o ../bin/kek-engine-v2 Main.o glew.o Scene.o InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o -rdynamic -L ../SDL2_image/libs -Wl,-Bstatic -lSDL2_image -Wl,-Bdynamic -lSDL2 -lGL -lm -lstdc++
+all: Main.o glew.o Scene.o  InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o PfGen.o
+	$(CC) -o ../bin/kek-engine-v2 Main.o glew.o Scene.o InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o PfGen.o -rdynamic -L ../SDL2_image/libs -Wl,-Bstatic -lSDL2_image -Wl,-Bdynamic -lSDL2 -lGL -lm -lstdc++
 	#$(CC) -o softRend Main.o glew.o Scene.o InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o ../SDL2libs/libSDL2.so -lm -lstdc++ -lGL
 
 clean:

@@ -1,11 +1,8 @@
+#pragma once
 
-
-//#include <Windows.h>
-// The GLM library contains vector and matrix functions and classes for us to use
-// They are designed to easily work with OpenGL!
-#include <glm.hpp> // This is the main GLM header
-#include <gtc/matrix_transform.hpp> // This one lets us use matrix transformations
-#include <gtc/type_ptr.hpp> // This one gives us access to a utility function which makes sending data to OpenGL nice and easy
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp> 
+#include <gtc/type_ptr.hpp> 
 
 #include <fstream>
 #include <string>
@@ -20,6 +17,8 @@
 #include "ShaderManager.h"
 #include "Light.h"
 #include "EventHandler.h"
+#include "Particle.h"
+#include "PfGen.h"
 #define CAM_SPEED 10.0f
 
 class Scene
@@ -51,6 +50,9 @@ protected:
 	GameObject * sphere[10];
 	GameObject * plane[10];
 	GameObject * empty[10];
+    Kep::Particle * part;
+    Kep::ParticleForceRegistry * pfr;
+    Kep::ParticleGravity * pgg;
 
 	vector<Light*> lightObjects;
 
@@ -75,10 +77,6 @@ protected:
 	MeshLine _line;
 	MeshPoint _point;
 	MeshCircle _circle;
-
-
-
-
 
 	//camera settigns
 	Camera * _mainCam;
