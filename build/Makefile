@@ -2,47 +2,47 @@
 CC = clang -std=gnu++11
 
 
-InputManager.o : ../InputManager.cpp
+InputManager.o : ../InputManager.cpp ../InputManager.h
 	$(CC) -c ../InputManager.cpp -I ../
 
-EventSubscriber.o : ../EventSubscriber.cpp
+EventSubscriber.o : ../EventSubscriber.cpp ../EventSubscriber.h
 	$(CC) -c ../EventSubscriber.cpp -I ../
 
-Event.o : ../Event.cpp
+Event.o : ../Event.cpp ../Event.h
 	$(CC) -c ../Event.cpp -I ../
 
-EventHandler.o : ../EventHandler.cpp
+EventHandler.o : ../EventHandler.cpp ../EventHandler.h
 	$(CC) -c ../EventHandler.cpp -I ../
 
-Component.o : ../Component.cpp
+Component.o : ../Component.cpp ../Component.h
 	$(CC) -c ../Component.cpp -I ../ -I ../glm/glm -I ../glm/glm/gtc -I ../glm/glm/gtx -I ../SDL2/include -I ../SDL2_image
 
-GameObject.o : ../GameObject.cpp
+GameObject.o : ../GameObject.cpp ../GameObject.h
 	$(CC) -c ../GameObject.cpp -I ../ -I ../glm/glm -I ../glm/glm/gtc -I ../glm/glm/gtx -I ../SDL2/include -I ../SDL2_image
 
-Light.o : ../Light.cpp
+Light.o : ../Light.cpp ../Light.h
 	$(CC) -c ../Light.cpp -I ../ -I ../glm/glm -I ../glm/glm/gtc -I ../glm/glm/gtx -I ../SDL2/include -I ../SDL2_image
 
-Mesh.o : ../Mesh.cpp
+Mesh.o : ../Mesh.cpp ../Mesh.h
 	$(CC) -c ../Mesh.cpp -I ../ -I ../glm/glm -I ../glm/glm/gtc -I ../glm/glm/gtx -I ../SDL2/include -I ../SDL2_image
 
-Obj2.o : ../Obj2.cpp
+Obj2.o : ../Obj2.cpp ../Obj2.h
 	$(CC) -c ../Obj2.cpp -I ../ -I ../glm/glm -I ../glm/glm/gtc -I ../glm/glm/gtx -I ../SDL2/include -I ../SDL2_image
 
-ShaderManager.o : ../ShaderManager.cpp
+ShaderManager.o : ../ShaderManager.cpp ../ShaderManager.h
 	$(CC) -c ../ShaderManager.cpp -I ../
 	
-Particle.o : ../kep/Particle.cpp
+Particle.o : ../kep/Particle.cpp ../kep/Particle.h
 	$(CC) -c ../kep/Particle.cpp -I ../
 	
-Core.o : ../kep/Core.cpp
+Core.o : ../kep/Core.cpp ../kep/Core.h
 	$(CC) -c ../kep/Core.cpp -I ../
 	
-PfGen.o : ../kep/PfGen.cpp
+PfGen.o : ../kep/PfGen.cpp ../kep/PfGen.h
 	$(CC) -c ../kep/PfGen.cpp -I ../
 #-------------------------------------------------------------
 
-Scene.o : ../Scene.cpp
+Scene.o : ../Scene.cpp ../Scene.h
 	$(CC) -c ../Scene.cpp -I ../ -I ../SDL2/include -I ../glm/glm -I ../glm/glm/gtc -I ../glm/glm/gtx -I ../SDL2_image -I ../kep/
 
 glew.o : ../glew.c

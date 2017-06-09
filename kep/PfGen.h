@@ -1,6 +1,6 @@
 #pragma once
 #include "Particle.h"
-
+//asdasd
 namespace Kep 
 {
     class ParticleForceGenerator
@@ -43,5 +43,30 @@ namespace Kep
         Vector3 m_gravity;
         ParticleGravity(const Vector3 & _gravity);
         virtual void updateForce(Particle * _particle, real _duration);
+    };
+    
+    class ParticleDrag : public ParticleForceGenerator
+    {
+    public:
+        //velocity drag coefficient
+        real m_k1;
+        //velocity squared drag coefficient
+        real m_k2;
+
+        ParticleDrag(real _k1, real _k2);
+        virtual void updateForce(Particle * _particle, real _duration);
+    };
+
+    
+    class ParticleSpring : public ParticleForceGenerator
+    {
+      Particle * m_other;
+      real m_springConstant;
+      real m_restLength;
+      
+    public:
+        ParticleSpring(Particle * _other, real _springConstant, real _restLength);
+        virtual void updateForce(Particle * _particle, real _duration);
+        
     };
 }

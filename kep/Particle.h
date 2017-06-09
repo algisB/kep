@@ -8,7 +8,8 @@
 #include <stdint.h>
 namespace Kep
 {
-    #define real_pow powf
+#define real_pow powf
+#define real_abs fabsf
     typedef float real;
     
     class Particle

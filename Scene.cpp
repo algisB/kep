@@ -132,15 +132,27 @@ EventHandler * _eventHandler)
 	tgo->attachComponent(new MeshRenderer(tgo, "meshRenderer", _navMesh, shaderProgramSimple, MeshRenderer::WIRE));
 	gameObjects.push_back(tgo);
     
-    pfr = new Kep::ParticleForceRegistry();
     
-    pgg = new Kep::ParticleGravity(Kep::Vector3(0.0f, -9.81f, 0.0f));
+    //Physics engine stuff
+    pfReg = new Kep::ParticleForceRegistry();
+    pgGen = new Kep::ParticleGravity(Kep::Vector3(0.0f, -9.81f, 0.0f));
+    pdGen = new Kep::ParticleDrag(0.1f, 0.01f);
     
     
     
-    part = new Kep::Particle(Kep::Vector3(0.0f,0.0f,0.0f), 1.0f, 0.9f);
-    pfr->add(part, pgg);
-    part->addForce(Kep::Vector3(100.0f, 400.0f, 100.0f));
+    
+    part[0] = new Kep::Particle(Kep::Vector3(20.0f,0.0f,0.0f), 1.0f, 1.0f);
+    pfReg->add(part[0], pgGen);
+    pfReg->add(part[0], pdGen);
+    
+    part[1] = new Kep::Particle(Kep::Vector3(0.0f,0.0f,0.0f), 1.0f, 1.0f);
+    //pfReg->add(part[1], pgGen);
+    //pfReg->add(part[1], pdGen);
+    
+    
+    psGen = new Kep::ParticleSpring(part[1], 1.0f, 1.0f);
+    pfReg->add(part[0], psGen);
+    //part->addForce(Kep::Vector3(100.0f, 400.0f, 100.0f));
     
 }
 
@@ -223,10 +235,14 @@ void Scene::Update(float _deltaTs)
 	
 	float moveSpeed = 10.0f;
 
-    pfr->updateForces(_deltaTs);
-    part->integrate(_deltaTs);
-    //part->m_velocity.dump();
-    cube[3]->getComponent<Transform>()->m_localPosition = glm::vec3(part->m_position.m_x, part->m_position.m_y, part->m_position.m_z);
+    //physics engine stuff
+    pfReg->updateForces(_deltaTs);
+    
+    part[0]->integrate(_deltaTs);
+    cube[0]->getComponent<Transform>()->m_localPosition = glm::vec3(part[0]->m_position.m_x, part[0]->m_position.m_y, part[0]->m_position.m_z);
+
+    part[1]->integrate(_deltaTs);
+    cube[1]->getComponent<Transform>()->m_localPosition = glm::vec3(part[1]->m_position.m_x, part[1]->m_position.m_y, part[1]->m_position.m_z);
 }
 
 void Scene::Draw()

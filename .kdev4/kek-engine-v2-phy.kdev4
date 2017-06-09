@@ -106,13 +106,14 @@ Name=Clang
 Launch Configurations=Launch Configuration 0
 
 [Launch][Launch Configuration 0]
-Configured Launch Modes=execute
-Configured Launchers=nativeAppLauncher
+Configured Launch Modes=execute,debug
+Configured Launchers=nativeAppLauncher,gdb
 Name=New Compiled Binary Launcher
 Type=Native Application
 
 [Launch][Launch Configuration 0][Data]
 Arguments=
+Break on Start=false
 Debugger Shell=
 Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x00)
 Dependency Action=Nothing
@@ -122,6 +123,14 @@ EnvironmentGroup=
 Executable=file:///root/projects/kek-engine-v2-phy/bin/kek-engine-v2
 External Terminal=konsole --noclose --workdir %workdir -e %exe
 GDB Path=
+LLDB Arguments=
+LLDB Config Script=
+LLDB Environment=
+LLDB Executable=
+LLDB Inherit System Env=true
+LLDB Remote Debugging=false
+LLDB Remote Path=
+LLDB Remote Server=
 Project Target=
 Remote GDB Config Script=
 Remote GDB Run Script=

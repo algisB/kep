@@ -50,9 +50,16 @@ protected:
 	GameObject * sphere[10];
 	GameObject * plane[10];
 	GameObject * empty[10];
-    Kep::Particle * part;
-    Kep::ParticleForceRegistry * pfr;
-    Kep::ParticleGravity * pgg;
+    
+    //physics engine
+    Kep::Particle * part[10];
+    
+    Kep::ParticleForceRegistry * pfReg;
+    
+    Kep::ParticleGravity * pgGen;
+    Kep::ParticleDrag * pdGen;
+    
+    Kep::ParticleSpring * psGen;
 
 	vector<Light*> lightObjects;
 
