@@ -38,8 +38,17 @@ Particle.o : ../kep/Particle.cpp ../kep/Particle.h
 Core.o : ../kep/Core.cpp ../kep/Core.h
 	$(CC) -c ../kep/Core.cpp -I ../
 	
-PfGen.o : ../kep/PfGen.cpp ../kep/PfGen.h
-	$(CC) -c ../kep/PfGen.cpp -I ../
+ParticleForceGenerator.o : ../kep/ParticleForceGenerator.cpp ../kep/ParticleForceGenerator.h
+	$(CC) -c ../kep/ParticleForceGenerator.cpp -I ../
+	
+ParticleContact.o : ../kep/ParticleContact.cpp ../kep/ParticleContact.h
+	$(CC) -c ../kep/ParticleContact.cpp -I ../
+	
+ParticleLink.o : ../kep/ParticleLink.cpp ../kep/ParticleLink.h
+	$(CC) -c ../kep/ParticleLink.cpp -I ../
+	
+ParticleWorld.o : ../kep/ParticleWorld.cpp ../kep/ParticleWorld.h
+	$(CC) -c ../kep/ParticleWorld.cpp -I ../
 #-------------------------------------------------------------
 
 Scene.o : ../Scene.cpp ../Scene.h
@@ -50,11 +59,12 @@ glew.o : ../glew.c
 
 Main.o : ../Main.cpp
 	$(CC) -c ../Main.cpp -I ../ -I ../SDL2/include -I ../glm/glm -I ../glm/glm/gtc -I ../glm/glm/gtx -I ../SDL2_image -I ../kep/
+	
 
 
 #linking
-all: Main.o glew.o Scene.o  InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o PfGen.o
-	$(CC) -o ../bin/kek-engine-v2 Main.o glew.o Scene.o InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o PfGen.o -rdynamic -L ../SDL2_image/libs -Wl,-Bstatic -lSDL2_image -Wl,-Bdynamic -lSDL2 -lGL -lm -lstdc++
+all: Main.o glew.o Scene.o  InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o ParticleForceGenerator.o ParticleContact.o ParticleLink.o ParticleWorld.o
+	$(CC) -o ../bin/kek-engine-v2 Main.o glew.o Scene.o InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o ParticleForceGenerator.o ParticleContact.o ParticleLink.o ParticleWorld.o -rdynamic -L ../SDL2_image/libs -Wl,-Bstatic -lSDL2_image -Wl,-Bdynamic -lSDL2 -lGL -lm -lstdc++
 	#$(CC) -o softRend Main.o glew.o Scene.o InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o ../SDL2libs/libSDL2.so -lm -lstdc++ -lGL
 
 clean:

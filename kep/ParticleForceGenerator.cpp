@@ -1,4 +1,4 @@
-#include "PfGen.h"
+#include "ParticleForceGenerator.h"
 using namespace Kep;
 
 
@@ -76,4 +76,58 @@ void ParticleSpring::updateForce(Particle * _particle, real _duration)
     force.normalize();
     force *= -magnitude;
     _particle->addForce(force);
+}
+
+ParticleAnchoredSpring::ParticleAnchoredSpring(Vector3 * _anchor, real _springConstant, real _restLength)
+{
+    m_anchor = _anchor;
+    m_springConstant = _springConstant;
+    m_restLength = _restLength;
+}
+
+void ParticleAnchoredSpring::updateForce(Particle * _particle, real _duration)
+{
+    Vector3 force;
+    force = _particle->m_position;
+    force -= *m_anchor;
+    
+    real magnitude = force.magnitude();
+    magnitude = real_abs(magnitude-m_restLength);
+    magnitude *= m_springConstant;
+    
+    force.normalize();
+    force *= -magnitude;
+    _particle->addForce(force);
+}
+
+ParticleFakeSpring::ParticleFakeSpring(Vector3 * _anchor, real _springConstant, real _damping)
+{
+    m_anchor = _anchor;
+    m_springConstant = _springConstant;
+    m_damping = _damping;
+}
+
+void ParticleFakeSpring::updateForce(Particle * _particle, real _duration)
+{
+    if( !_particle->hasFiniteMass())
+        return;
+    
+    Vector3 position =_particle->m_position;
+    position -= *m_anchor;
+    real gamma = 0.5f * real_sqrt(4 * m_springConstant - m_damping * m_damping);
+    if(gamma == 0.0f) return;
+
+    
+    Vector3 c = position * (m_damping / (2.0f *gamma)) + _particle->m_velocity * (1.0f / gamma);
+    
+    Vector3 target = position * real_cos(gamma * _duration) + c * real_sin(gamma * _duration);
+    
+    
+    target *= real_exp(-0.5f * _duration * m_damping);
+    
+    Vector3 accel = (target - position) * (1.0f / _duration*_duration) - _particle->m_velocity * _duration;
+    
+    _particle->addForce(accel * _particle->getMass());
+    
+    
 }

@@ -132,11 +132,17 @@ EventHandler * _eventHandler)
 	tgo->attachComponent(new MeshRenderer(tgo, "meshRenderer", _navMesh, shaderProgramSimple, MeshRenderer::WIRE));
 	gameObjects.push_back(tgo);
     
-    
+    ///////////////////////////////////////////
     //Physics engine stuff
+    ///////////////////////////////////////////
     pfReg = new Kep::ParticleForceRegistry();
+    
+    ///////////////////////////////////////////
     pgGen = new Kep::ParticleGravity(Kep::Vector3(0.0f, -9.81f, 0.0f));
     pdGen = new Kep::ParticleDrag(0.1f, 0.01f);
+    
+    pcReg = new Kep::ParticleContactRegistry();
+    pcRes = new Kep::ParticleContactResolver(pcReg, 100);
     
     
     
@@ -149,10 +155,18 @@ EventHandler * _eventHandler)
     //pfReg->add(part[1], pgGen);
     //pfReg->add(part[1], pdGen);
     
+    link1 = new Kep::ParticleCable(part[0],part[1], pcReg, 2.0f, 0.5f);
     
-    psGen = new Kep::ParticleSpring(part[1], 1.0f, 1.0f);
-    pfReg->add(part[0], psGen);
+    
+    //psGen = new Kep::ParticleSpring(part[1], 1.0f, 1.0f);
+    //pfReg->add(part[0], psGen);
+    
+    //pasGen = new Kep::ParticleAnchoredSpring(new Kep::Vector3(0.0f, 0.0f, 0.0f), 1.0f, 1.0f);
+    //pfReg->add(part[1], pasGen);
+    
+    
     //part->addForce(Kep::Vector3(100.0f, 400.0f, 100.0f));
+    
     
 }
 
@@ -239,9 +253,18 @@ void Scene::Update(float _deltaTs)
     pfReg->updateForces(_deltaTs);
     
     part[0]->integrate(_deltaTs);
-    cube[0]->getComponent<Transform>()->m_localPosition = glm::vec3(part[0]->m_position.m_x, part[0]->m_position.m_y, part[0]->m_position.m_z);
-
     part[1]->integrate(_deltaTs);
+    
+    link1->update();
+    pcRes->resolveContacts(_deltaTs);
+    //printf("num cont %d \n", pcRes->m_pcr->m_registrations.size());
+//     if(pcRes->m_pcr->m_registrations.size()>0)
+//     {
+//         pcRes->m_pcr->m_registrations[0].resolve(_deltaTs);
+//         pcRes->m_pcr->m_registrations.clear();
+//         
+//     }
+    cube[0]->getComponent<Transform>()->m_localPosition = glm::vec3(part[0]->m_position.m_x, part[0]->m_position.m_y, part[0]->m_position.m_z);
     cube[1]->getComponent<Transform>()->m_localPosition = glm::vec3(part[1]->m_position.m_x, part[1]->m_position.m_y, part[1]->m_position.m_z);
 }
 

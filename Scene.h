@@ -18,7 +18,8 @@
 #include "Light.h"
 #include "EventHandler.h"
 #include "Particle.h"
-#include "PfGen.h"
+#include "ParticleForceGenerator.h"
+#include "ParticleWorld.h"
 #define CAM_SPEED 10.0f
 
 class Scene
@@ -51,16 +52,29 @@ protected:
 	GameObject * plane[10];
 	GameObject * empty[10];
     
-    //physics engine
+    //physics engine//////////////////////
     Kep::Particle * part[10];
     
     Kep::ParticleForceRegistry * pfReg;
     
     Kep::ParticleGravity * pgGen;
+    
     Kep::ParticleDrag * pdGen;
     
     Kep::ParticleSpring * psGen;
-
+    
+    Kep::ParticleAnchoredSpring * pasGen;
+    
+    Kep::ParticleFakeSpring * pfsGen;
+    
+    Kep::ParticleWorld * pWorld;
+    
+    
+    Kep::ParticleContactRegistry * pcReg;
+    Kep::ParticleContactResolver * pcRes;
+    Kep::ParticleLink * link1;
+    
+    ///////////////////////////////////////
 	vector<Light*> lightObjects;
 
 	//window setting

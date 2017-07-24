@@ -1,16 +1,18 @@
 #pragma once
 #include "Core.h"
 #include <assert.h>
-#include <math.h>
+//#include <math.h>
+
 #include <vector>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include "precision.h"
 namespace Kep
 {
-#define real_pow powf
-#define real_abs fabsf
-    typedef float real;
+//#define real_pow powf
+//#define real_abs fabsf
+//    typedef float real;
     
     class Particle
     {

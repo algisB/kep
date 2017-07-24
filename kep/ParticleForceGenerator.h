@@ -69,4 +69,24 @@ namespace Kep
         virtual void updateForce(Particle * _particle, real _duration);
         
     };
+    
+    class ParticleAnchoredSpring : public ParticleForceGenerator
+    {
+        Vector3 * m_anchor;
+        real m_springConstant;
+        real m_restLength;
+    public:
+        ParticleAnchoredSpring(Vector3 * _anchor, real _springConstant, real _restLength);
+        virtual void updateForce(Particle * _particle, real _duration);
+    };
+    
+    class ParticleFakeSpring : public ParticleForceGenerator
+    {
+        Vector3 * m_anchor;
+        real m_springConstant;
+        real m_damping;
+    public:
+        ParticleFakeSpring(Vector3 * _anchor, real _springConstant, real _damping);
+        virtual void updateForce(Particle * _particle, real _duration);
+    };
 }
