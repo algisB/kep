@@ -262,7 +262,7 @@ void Scene::Update(float _deltaTs)
 //     {
 //         pcRes->m_pcr->m_registrations[0].resolve(_deltaTs);
 //         pcRes->m_pcr->m_registrations.clear();
-//         
+//         t
 //     }
     cube[0]->getComponent<Transform>()->m_localPosition = glm::vec3(part[0]->m_position.m_x, part[0]->m_position.m_y, part[0]->m_position.m_z);
     cube[1]->getComponent<Transform>()->m_localPosition = glm::vec3(part[1]->m_position.m_x, part[1]->m_position.m_y, part[1]->m_position.m_z);
