@@ -53,4 +53,58 @@ namespace Kep
         
         void dump();
     };
+    
+    class Matrix3
+    {
+    public:
+        real data[9];
+        
+        Matrix3();
+        Matrix3(    
+        real _d0, real _d1, real _d2,
+        real _d3, real _d4, real _d5,
+        real _d6, real _d7, real _d8
+        );
+        ~Matrix3();
+        
+        Matrix3 operator*(const Matrix3 &_o) const;
+        
+        
+        
+        real determinant() const;
+        Matrix3 transpose() const;
+        Matrix3 cofactor() const;
+        void setInverse(const Matrix3 & _m);
+        Matrix3 inverse() const;
+        void invert();
+        
+        void dump();
+    };
+    
+    class Matrix4
+    {
+    public:
+        real data[16];
+        
+        Matrix4();
+        Matrix4(    
+        real _d0, real _d1, real _d2, real _d3,
+        real _d4, real _d5, real _d6, real _d7,
+        real _d8, real _d9, real _d10, real _d11,
+        real _d12, real _d13, real _d14, real _d15
+        );
+        
+        ~Matrix4();
+        Vector3 operator*(const Vector3 &_vector) const;
+        Matrix4 operator*(const Matrix4 &_o) const;
+        real determinant() const;
+        Matrix4 transpose() const;
+        Matrix4 cofactor() const;
+        void setInverse(const Matrix4 &_m);
+        Matrix4 inverse() const;
+        void invert();
+        
+        void dump();
+        
+    };
 }

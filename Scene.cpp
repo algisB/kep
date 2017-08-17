@@ -167,6 +167,28 @@ EventHandler * _eventHandler)
     
     //part->addForce(Kep::Vector3(100.0f, 400.0f, 100.0f));
     
+    mat1 = Kep::Matrix4(
+        11.0f, 9.2f, 12.2f,1.8f,
+        0.7f, -1.0f, 3.1f, 2.9f,
+       3.3f, 2.3f, -7.0f, 4.6f,
+       7.1f, 21.0f, 10.0f, 1.0f
+    );
+    mat2 = mat1.inverse();
+    
+    Kep::Matrix4 mat3 = mat1 * mat2;
+    mat3.dump();
+    //printf("det :%f \n", mat1.determinant());
+
+    mat4 = Kep::Matrix3(
+        1.0f, 9.2f, 1.4f,
+        2.6f, -1.0f, 3.1f,
+       0.7f, 2.3f, -7.0f
+    );
+    mat5 = mat4.inverse();
+    
+    Kep::Matrix3 mat6 = mat4 * mat5;
+    //mat6.dump();
+    //printf("det :%f \n", mat4.determinant());
     
 }
 
