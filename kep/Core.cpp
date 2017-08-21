@@ -106,8 +106,11 @@ void Vector3::dump()
     printf("x: %f, y: %f, z: %f \n", m_x, m_y, m_z );
 }
 
-Matrix3::Matrix3()
-{}
+
+
+
+
+
 Matrix3::~Matrix3()
 {}
 
@@ -197,7 +200,10 @@ Matrix3 Matrix3::cofactor() const
 
 void Matrix3::setInverse(const Matrix3 & _m)
 {
-    real invDet = 1.0f/_m.determinant();
+    real det = _m.determinant();
+    if(det == 0) return;
+    
+    real invDet = 1.0f/det;
     
     Matrix3 cof = _m.cofactor();
     Matrix3 cofTrans = cof.transpose();
@@ -224,7 +230,22 @@ void Matrix3::invert()
 {
     setInverse(*this);
 }
-
+void Matrix3::setOrientation(const Quaternion &_q)
+{
+    data[0] = 1 - (2*_q.j*_q.j + 2*_q.k*_q.k);
+    
+    data[1] = 2*_q.i*_q.j + 2*_q.k*_q.r;
+    data[2] = 2*_q.i*_q.k + 2*_q.j*_q.r;
+    data[3] = 2*_q.i*_q.j + 2*_q.k*_q.r;
+    
+    data[4] = 1 - (2*_q.i*_q.i + 2*_q.k*_q.k);
+    
+    data[5] = 2*_q.j*_q.k + 2*_q.i*_q.r;
+    data[6] = 2*_q.i*_q.k + 2*_q.j*_q.r;
+    data[7] = 2*_q.j*_q.k + 2*_q.i*_q.r;
+    
+    data[8] = 1 - (2*_q.i*_q.i + 2*_q.j*_q.j);
+}
 
 void Matrix3::dump()
 {
@@ -234,9 +255,9 @@ void Matrix3::dump()
            data[6], data[7], data[8]
     );
 }
-                            
-Matrix4::Matrix4()
-{}
+                 
+                 
+                 
 
 Matrix4::Matrix4(
     real _d0, real _d1, real _d2, real _d3,
@@ -257,9 +278,9 @@ Matrix4::~Matrix4()
 }
 Vector3 Matrix4::operator*(const Vector3 & _vector) const
 {
-    return Vector3(data[0]*_vector.m_x + data[1]*_vector.m_y + data[2]*_vector.m_z,
-                   data[3]*_vector.m_x + data[4]*_vector.m_y + data[5]*_vector.m_z,
-                   data[6]*_vector.m_x + data[7]*_vector.m_y + data[8]*_vector.m_z);
+    return Vector3(data[0]*_vector.m_x + data[1]*_vector.m_y + data[2]*_vector.m_z + data[3], 
+                   data[4]*_vector.m_x + data[5]*_vector.m_y + data[6]*_vector.m_z + data[7],
+                   data[8]*_vector.m_x + data[9]*_vector.m_y + data[10]*_vector.m_z + data[11]);
 }
 
 Matrix4 Matrix4::operator*(const Matrix4 &_o) const
@@ -441,7 +462,9 @@ Matrix4 Matrix4::cofactor() const
 }
 void Matrix4::setInverse(const Matrix4 &_m)
 {
-    real invDet = 1.0f/_m.determinant();
+    real det = _m.determinant();
+    if(det == 0) return;
+    real invDet = 1.0f/det;
     
     Matrix4 cof = _m.cofactor();
     Matrix4 cofTrans = cof.transpose();
@@ -464,6 +487,24 @@ void Matrix4::setInverse(const Matrix4 &_m)
     data[14] = invDet * cofTrans.data[14];
     data[15] = invDet * cofTrans.data[15];
     
+}
+
+void Matrix4::setOrientationAndPos(const Quaternion &_q, const Vector3 &_pos)
+{
+    data[0] = 1 - (2*_q.j*_q.j + 2*_q.k*_q.k);
+    data[1] = 2*_q.i*_q.j + 2*_q.k*_q.r;
+    data[2] = 2*_q.i*_q.k - 2*_q.j*_q.r;
+    data[3] = _pos.m_x;
+    
+    data[4] = (2*_q.i*_q.j - 2*_q.k*_q.r);
+    data[5] = 1 - (2*_q.i*_q.i + 2*_q.k*_q.k);
+    data[6] = 2*_q.j*_q.k + 2*_q.i*_q.r;
+    data[7] = _pos.m_y;
+    
+    data[8] = 2*_q.i*_q.k + 2*_q.j*_q.r;
+    data[9] = 2*_q.j*_q.k + 2*_q.i*_q.r;
+    data[10] = 1 - (2*_q.i*_q.i + 2*_q.j*_q.j);
+    data[11] = _pos.m_z;
 }
 
 void Matrix4::dump()

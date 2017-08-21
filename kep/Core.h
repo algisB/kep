@@ -54,16 +54,25 @@ namespace Kep
         void dump();
     };
     
+    class Quaternion
+    {
+    public:
+        real i;
+        real j;
+        real k;
+        
+        real r;
+        
+    };
     class Matrix3
     {
     public:
         real data[9];
         
-        Matrix3();
         Matrix3(    
-        real _d0, real _d1, real _d2,
-        real _d3, real _d4, real _d5,
-        real _d6, real _d7, real _d8
+        real _d0 = 1.0f, real _d1 = 0.0f, real _d2 = 0.0f,
+        real _d3 = 0.0f, real _d4 = 1.0f, real _d5 = 0.0f,
+        real _d6 = 0.0f, real _d7 = 0.0f, real _d8 = 1.0f
         );
         ~Matrix3();
         
@@ -78,6 +87,8 @@ namespace Kep
         Matrix3 inverse() const;
         void invert();
         
+        void setOrientation(const Quaternion &_q);
+        
         void dump();
     };
     
@@ -86,12 +97,11 @@ namespace Kep
     public:
         real data[16];
         
-        Matrix4();
         Matrix4(    
-        real _d0, real _d1, real _d2, real _d3,
-        real _d4, real _d5, real _d6, real _d7,
-        real _d8, real _d9, real _d10, real _d11,
-        real _d12, real _d13, real _d14, real _d15
+        real _d0 = 1.0f, real _d1 = 0.0f, real _d2 = 0.0f, real _d3 = 0.0f,
+        real _d4 = 0.0f, real _d5 = 1.0f, real _d6 = 0.0f, real _d7 = 0.0f,
+        real _d8 = 0.0f, real _d9 = 0.0f, real _d10 = 1.0f, real _d11 = 0.0f,
+        real _d12 = 0.0f, real _d13 = 0.0f, real _d14 = 0.0f, real _d15 = 1.0f
         );
         
         ~Matrix4();
@@ -104,7 +114,11 @@ namespace Kep
         Matrix4 inverse() const;
         void invert();
         
+        void setOrientationAndPos(const Quaternion &_q, const Vector3 &_pos);
+        
         void dump();
         
     };
+    
+
 }
