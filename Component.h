@@ -7,6 +7,7 @@
 #include <quaternion.hpp>
 #include "ShaderManager.h"
 #include "SETTINGS.h"
+#include "kep/Core.h"
 //
 
 class GameObject;
@@ -97,6 +98,20 @@ public:
 	Camera(GameObject *_gameObject, string _tag, glm::mat4 _projectionMatrix);
 	~Camera();
 	void update();
+};
+
+//made for testing purposes
+class PhysicalComponent : public Component
+{
+public:
+    Transform * m_transform;
+    
+    PhysicalComponent(GameObject *_gameObject, string _tag);
+    ~PhysicalComponent();
+    
+    void update();
+    
+    
 };
 
 

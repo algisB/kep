@@ -74,10 +74,8 @@ protected:
     Kep::ParticleContactResolver * pcRes;
     Kep::ParticleLink * link1;
     Kep::Matrix4 mat1;
-    Kep::Matrix4 mat2;
     
-    Kep::Matrix3 mat4;
-    Kep::Matrix3 mat5;
+    Kep::Quaternion q1;
     
     ///////////////////////////////////////
 	vector<Light*> lightObjects;

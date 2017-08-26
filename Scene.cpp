@@ -88,9 +88,10 @@ EventHandler * _eventHandler)
 	tgo->attachComponent(new Transform(tgo, "transform", &_mainCam->m_viewMatrix, &_mainCam->m_projectionMatrix));
 	tr = tgo->getComponent<Transform>();
 	tr->m_localPosition = glm::vec3(1.0f, 20.0f, 4.0f);
-	tr->m_localRotation = glm::vec3(0.0f,0.0f,0.0f);
+	tr->m_localRotation = glm::vec3(0.0f,45.0f,0.0f);
 	tr->m_localScale = glm::vec3(1.0f, 1.0f, 1.0f);
-
+    
+    tgo->attachComponent(new PhysicalComponent(tgo, "PhysicalComponent"));
 	tgo->attachComponent(new Material(tgo, "material", &_texture3));
 	tgo->attachComponent(new MeshRenderer(tgo, "meshRenderer", _cube, shaderProgramSimple, MeshRenderer::WIRE));
 	gameObjects.push_back(tgo);
@@ -132,63 +133,9 @@ EventHandler * _eventHandler)
 	tgo->attachComponent(new MeshRenderer(tgo, "meshRenderer", _navMesh, shaderProgramSimple, MeshRenderer::WIRE));
 	gameObjects.push_back(tgo);
     
-    ///////////////////////////////////////////
-    //Physics engine stuff
-    ///////////////////////////////////////////
-    pfReg = new Kep::ParticleForceRegistry();
-    
-    ///////////////////////////////////////////
-    pgGen = new Kep::ParticleGravity(Kep::Vector3(0.0f, -9.81f, 0.0f));
-    pdGen = new Kep::ParticleDrag(0.1f, 0.01f);
-    
-    pcReg = new Kep::ParticleContactRegistry();
-    pcRes = new Kep::ParticleContactResolver(pcReg, 100);
     
     
     
-    
-    part[0] = new Kep::Particle(Kep::Vector3(20.0f,0.0f,0.0f), 1.0f, 1.0f);
-    pfReg->add(part[0], pgGen);
-    pfReg->add(part[0], pdGen);
-    
-    part[1] = new Kep::Particle(Kep::Vector3(0.0f,0.0f,0.0f), 1.0f, 1.0f);
-    //pfReg->add(part[1], pgGen);
-    //pfReg->add(part[1], pdGen);
-    
-    link1 = new Kep::ParticleCable(part[0],part[1], pcReg, 2.0f, 0.5f);
-    
-    
-    //psGen = new Kep::ParticleSpring(part[1], 1.0f, 1.0f);
-    //pfReg->add(part[0], psGen);
-    
-    //pasGen = new Kep::ParticleAnchoredSpring(new Kep::Vector3(0.0f, 0.0f, 0.0f), 1.0f, 1.0f);
-    //pfReg->add(part[1], pasGen);
-    
-    
-    //part->addForce(Kep::Vector3(100.0f, 400.0f, 100.0f));
-    
-    mat1 = Kep::Matrix4(
-        11.0f, 9.2f, 12.2f,1.8f,
-        0.7f, -1.0f, 3.1f, 2.9f,
-       3.3f, 2.3f, -7.0f, 4.6f,
-       7.1f, 21.0f, 10.0f, 1.0f
-    );
-    mat2 = mat1.inverse();
-    
-    Kep::Matrix4 mat3 = mat1 * mat2;
-    mat3.dump();
-    //printf("det :%f \n", mat1.determinant());
-
-    mat4 = Kep::Matrix3(
-        1.0f, 9.2f, 1.4f,
-        2.6f, -1.0f, 3.1f,
-       0.7f, 2.3f, -7.0f
-    );
-    mat5 = mat4.inverse();
-    
-    Kep::Matrix3 mat6 = mat4 * mat5;
-    //mat6.dump();
-    //printf("det :%f \n", mat4.determinant());
     
 }
 
@@ -272,13 +219,13 @@ void Scene::Update(float _deltaTs)
 	float moveSpeed = 10.0f;
 
     //physics engine stuff
-    pfReg->updateForces(_deltaTs);
+    //pfReg->updateForces(_deltaTs);
     
-    part[0]->integrate(_deltaTs);
-    part[1]->integrate(_deltaTs);
+    //part[0]->integrate(_deltaTs);
+    //part[1]->integrate(_deltaTs);
     
-    link1->update();
-    pcRes->resolveContacts(_deltaTs);
+    //link1->update();
+    //pcRes->resolveContacts(_deltaTs);
     //printf("num cont %d \n", pcRes->m_pcr->m_registrations.size());
 //     if(pcRes->m_pcr->m_registrations.size()>0)
 //     {
@@ -286,9 +233,12 @@ void Scene::Update(float _deltaTs)
 //         pcRes->m_pcr->m_registrations.clear();
 //         t
 //     }
-    cube[0]->getComponent<Transform>()->m_localPosition = glm::vec3(part[0]->m_position.m_x, part[0]->m_position.m_y, part[0]->m_position.m_z);
-    cube[1]->getComponent<Transform>()->m_localPosition = glm::vec3(part[1]->m_position.m_x, part[1]->m_position.m_y, part[1]->m_position.m_z);
+
+    //cube[0]->getComponent<Transform>()->m_localPosition = glm::vec3(part[0]->m_position.m_x, part[0]->m_position.m_y, part[0]->m_position.m_z);
+    //cube[1]->getComponent<Transform>()->m_localPosition = glm::vec3(part[1]->m_position.m_x, part[1]->m_position.m_y, part[1]->m_position.m_z);
+    
 }
+
 
 void Scene::Draw()
 {
@@ -308,7 +258,6 @@ void Scene::Draw()
 		}
 
 	}
-
 
 	//draw axis
 	glUseProgram(shaderProgramSimple->m_shaderProgramLocation);

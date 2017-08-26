@@ -57,13 +57,28 @@ namespace Kep
     class Quaternion
     {
     public:
-        real i;
-        real j;
-        real k;
+        union
+        {
+            struct
+            {
+                real r;
+                
+                real i;
+                real j;
+                real k;
+            };
+            real data[4];
+        };
         
-        real r;
-        
+        Quaternion(real _r = 0.0f, real _i = 0.0f, real _j = 0.0f, real _k = 0.0f);
+        ~Quaternion();
+        void normalize();
+        void operator *= (const Quaternion &_multiplier);
+        void rotateByVector(const Vector3 &_vector);
+        void addScaledVector(const Vector3 &_vector, real _scale);
+        void setEuler(Vector3 _axis, real _angle);
     };
+    
     class Matrix3
     {
     public:
@@ -116,9 +131,12 @@ namespace Kep
         
         void setOrientationAndPos(const Quaternion &_q, const Vector3 &_pos);
         
+        Vector3 transformInverseDirection(const Vector3 &_vector) const;
+        Vector3 transformDirection(const Vector3 &_vector)const;
+        
+        
         void dump();
         
     };
     
-
 }

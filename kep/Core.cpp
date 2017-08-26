@@ -107,7 +107,95 @@ void Vector3::dump()
 }
 
 
+Quaternion::Quaternion(real _r, real _i, real _j, real _k)
+{
+    r = _r;
+    i = _i;
+    j = _j;
+    k = _k;
+}
+Quaternion::~Quaternion()
+{
+}
 
+void Quaternion::normalize()
+{
+    real d = r*r+i*i+j*j+k*k;
+    if(d==0)
+    {
+        r=1;
+        return;
+    }
+    d = ((real)1.0)/real_sqrt(d);
+    
+    r *= d;
+    i *= d;
+    j *= d;
+    k *= d;
+}
+
+void Quaternion::operator*= (const Quaternion &_multiplier)
+{
+    Quaternion q = *this;
+    r = q.r*_multiplier.r - q.i*_multiplier.i -
+        q.j*_multiplier.j - q.k*_multiplier.k;
+        
+    i = q.r*_multiplier.i + q.i*_multiplier.r + 
+        q.j*_multiplier.k - q.k*_multiplier.j;
+        
+    j = q.r*_multiplier.j + q.j*_multiplier.r +
+        q.k*_multiplier.i - q.i*_multiplier.k;
+        
+    k = q.r*_multiplier.k + q.k*_multiplier.r +
+        q.i*_multiplier.j - q.j*_multiplier.i;
+}
+
+void Quaternion::rotateByVector(const Vector3 &_vector)
+{
+    Quaternion q(0, _vector.m_x, _vector.m_y, _vector.m_z);
+    (*this) *= q;
+}
+
+void Quaternion::addScaledVector(const Vector3 &_vector, real _scale)
+{
+    Quaternion q(0,
+        _vector.m_x * _scale,
+        _vector.m_y * _scale,
+        _vector.m_z * _scale);
+    q *= *this;
+    
+    r += q.r *((real)0.5);
+    i += q.i *((real)0.5);
+    j += q.j *((real)0.5);
+    k += q.k *((real)0.5);
+    
+}
+
+void Quaternion::
+setEuler(Vector3 _axis, real _angle)
+{
+//     real cy = cos(_yaw*(3.14159265358979323846 / 180.0f)     * 0.5f);
+// 	real sy = sin(_yaw*(3.14159265358979323846 / 180.0f)     * 0.5f);
+//     
+// 	real cr = cos(_roll*(3.14159265358979323846 / 180.0f)    * 0.5f);
+// 	real sr = sin(_roll*(3.14159265358979323846 / 180.0f)    * 0.5f);
+//     
+// 	real cp = cos(_pitch*(3.14159265358979323846 / 180.0f)   * 0.5f);
+// 	real sp = sin(_pitch*(3.14159265358979323846 / 180.0f)   * 0.5f);
+// 
+// 	r = cy * cr * cp + sy * sr * sp;
+//     
+// 	i = cy * sr * cp - sy * cr * sp;
+// 	j = cy * cr * sp + sy * sr * cp;
+// 	k = sy * cr * cp - cy * sr * sp;
+    
+    float ang = _angle*(3.14159265358979323846 / 180.0f);
+    r = cos(ang/2);
+    
+    i = _axis.m_x*sin(ang/2);
+    j = _axis.m_y*sin(ang/2);
+    k = _axis.m_z*sin(ang/2);
+}
 
 
 
@@ -235,14 +323,14 @@ void Matrix3::setOrientation(const Quaternion &_q)
     data[0] = 1 - (2*_q.j*_q.j + 2*_q.k*_q.k);
     
     data[1] = 2*_q.i*_q.j + 2*_q.k*_q.r;
-    data[2] = 2*_q.i*_q.k + 2*_q.j*_q.r;
-    data[3] = 2*_q.i*_q.j + 2*_q.k*_q.r;
+    data[2] = 2*_q.i*_q.k - 2*_q.j*_q.r;
+    data[3] = 2*_q.i*_q.j - 2*_q.k*_q.r;
     
     data[4] = 1 - (2*_q.i*_q.i + 2*_q.k*_q.k);
     
     data[5] = 2*_q.j*_q.k + 2*_q.i*_q.r;
     data[6] = 2*_q.i*_q.k + 2*_q.j*_q.r;
-    data[7] = 2*_q.j*_q.k + 2*_q.i*_q.r;
+    data[7] = 2*_q.j*_q.k - 2*_q.i*_q.r;
     
     data[8] = 1 - (2*_q.i*_q.i + 2*_q.j*_q.j);
 }
@@ -502,9 +590,42 @@ void Matrix4::setOrientationAndPos(const Quaternion &_q, const Vector3 &_pos)
     data[7] = _pos.m_y;
     
     data[8] = 2*_q.i*_q.k + 2*_q.j*_q.r;
-    data[9] = 2*_q.j*_q.k + 2*_q.i*_q.r;
+    data[9] = 2*_q.j*_q.k - 2*_q.i*_q.r;
     data[10] = 1 - (2*_q.i*_q.i + 2*_q.j*_q.j);
     data[11] = _pos.m_z;
+}
+Vector3 Matrix4::transformInverseDirection(const Vector3 &_vector) const
+{
+    return Vector3(
+        _vector.m_x * data[0] +
+        _vector.m_y * data[4] +
+        _vector.m_z * data[8],
+        
+        _vector.m_x * data[1] +
+        _vector.m_y * data[5] +
+        _vector.m_z * data[9],
+        
+        _vector.m_x * data[2] +
+        _vector.m_y * data[6] +
+        _vector.m_z * data[10]
+    );
+}
+
+Vector3 Matrix4::transformDirection(const Vector3 &_vector) const
+{
+    return Vector3(
+        _vector.m_x * data[0] +
+        _vector.m_y * data[1] +
+        _vector.m_z * data[2],
+        
+        _vector.m_x * data[4] +
+        _vector.m_y * data[5] +
+        _vector.m_z * data[6],
+        
+        _vector.m_x * data[8] +
+        _vector.m_y * data[9] +
+        _vector.m_z * data[10]
+    );
 }
 
 void Matrix4::dump()

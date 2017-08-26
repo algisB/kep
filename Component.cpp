@@ -26,8 +26,7 @@ Transform::Transform(GameObject *_gameObject, string _tag, glm::mat4 * _viewMatr
 
 	this->m_modelMatrix = glm::translate(glm::scale(glm::mat4(1.0f), this->m_scale), this->m_position);
 	this->m_rotMatrix = glm::rotate(glm::rotate(glm::rotate(glm::mat4(1.0f), (this->m_rotation.z * 3.14159265358979323846f / 180.0f), glm::vec3(0, 0, 1)), (this->m_rotation.y * 3.14159265358979323846f / 180.0f), glm::vec3(0, 1, 0)), (this->m_rotation.x * 3.14159265358979323846f / 180.0f), glm::vec3(1, 0, 0));
-	//this->m_modelMatrix = glm::rotate(glm::rotate(glm::rotate(glm::translate(glm::scale(glm::mat4(1.0f), this->m_scale), this->m_position), (this->m_rotation.z * 3.14159265358979323846f / 180.0f), glm::vec3(0, 0, 1)), (this->m_rotation.y * 3.14159265358979323846f / 180.0f), glm::vec3(0, 1, 0)), (this->m_rotation.x * 3.14159265358979323846f / 180.0f), glm::vec3(1, 0, 0));
-	//this->m_rotMatrix = glm::mat4(1.0f);
+
 
 	this->m_viewMatrix = _viewMatrix;
 	this->m_projectionMatrix = _projectionMatrix;
@@ -38,21 +37,10 @@ void Transform::update()
 }
 void Transform::recalc()
 {
-	//this->m_modelMatrix = glm::translate(glm::scale(glm::mat4(1.0f), this->m_scale), this->m_position);
-	//this->m_rotMatrix = glm::rotate(glm::rotate(glm::rotate(glm::mat4(1.0f), (this->m_rotation.z * 3.14159265358979323846f / 180.0f), glm::vec3(0, 0, 1)), (this->m_rotation.y * 3.14159265358979323846f / 180.0f), glm::vec3(0, 1, 0)), (this->m_rotation.x * 3.14159265358979323846f / 180.0f), glm::vec3(1, 0, 0));
-	
-	//glm::rotate(glm::rotate(glm::rotate(glm::mat4(1.0f), (this->m_localRotation.z * 3.14159265358979323846f / 180.0f), glm::vec3(0, 0, 1)), (this->m_localRotation.y * 3.14159265358979323846f / 180.0f), glm::vec3(0, 1, 0)), (this->m_localRotation.x * 3.14159265358979323846f / 180.0f), glm::vec3(1, 0, 0));
-	
-	//this->m_modelMatrix = glm::rotate(glm::rotate(glm::rotate(glm::translate(glm::scale(glm::mat4(1.0f), this->m_scale), this->m_position), (this->m_rotation.z * 3.14159265358979323846f / 180.0f), glm::vec3(0, 0, 1)), (this->m_rotation.y * 3.14159265358979323846f / 180.0f), glm::vec3(0, 1, 0)), (this->m_rotation.x * 3.14159265358979323846f / 180.0f), glm::vec3(1, 0, 0));
-	//this->m_rotMatrix = glm::mat4(1.0f);
-
-	
 	m_localTransform = glm::mat4(1.0f);
 	m_globalTransform = glm::mat4(1.0f);
 	m_inheritTransform = glm::mat4(1.0f);
 	
-	//if parented, add parent's transform
-	//m_inheritTransform = glm::translate(glm::rotate(glm::rotate(glm::rotate(glm::mat4(1.0f), (this->m_localRotation.z * 3.14159265358979323846f / 180.0f), glm::vec3(0, 0, 1)), (this->m_localRotation.y * 3.14159265358979323846f / 180.0f), glm::vec3(0, 1, 0)), (this->m_localRotation.x * 3.14159265358979323846f / 180.0f), glm::vec3(1, 0, 0)), this->m_localPosition);
 	m_inheritTransform = glm::rotate(glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), this->m_localPosition), (this->m_localRotation.z * 3.14159265358979323846f / 180.0f), glm::vec3(0, 0, 1)), (this->m_localRotation.y * 3.14159265358979323846f / 180.0f), glm::vec3(0, 1, 0)), (this->m_localRotation.x * 3.14159265358979323846f / 180.0f), glm::vec3(1, 0, 0));
 	m_localTransform = glm::scale(m_inheritTransform, this->m_localScale);
 
@@ -158,30 +146,49 @@ Camera::~Camera()
 
 void Camera::update()
 {
-	//m_viewMatrix = m_transform->m_modelMatrix;
-	//m_viewMatrix = glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), m_transform->m_position), 0.0f, glm::vec3(1, 0, 0)), m_transform->m_rotation.y, glm::vec3(0, 1, 0));
-	//m_viewMatrix = glm::rotate(glm::rotate(glm::rotate(glm::translate(glm::scale(glm::mat4(1.0f), m_transform->m_scale), m_transform->m_position), (m_transform->m_rotation.z * 3.14159265358979323846f / 180.0f), glm::vec3(0, 0, 1)), (m_transform->m_rotation.y * 3.14159265358979323846f / 180.0f), glm::vec3(0, 1, 0)), (m_transform->m_rotation.x * 3.14159265358979323846f / 180.0f), glm::vec3(1, 0, 0));
-	//m_viewMatrix = glm::translate(glm::scale(glm::rotate(glm::rotate(glm::rotate(glm::mat4(1.0f), (m_transform->m_rotation.z * 3.14159265358979323846f / 180.0f), glm::vec3(0, 0, 1)), (m_transform->m_rotation.y * 3.14159265358979323846f / 180.0f), glm::vec3(0, 1, 0)), (m_transform->m_rotation.x * 3.14159265358979323846f / 180.0f), glm::vec3(1, 0, 0)), m_transform->m_scale), m_transform->m_position);
-	/*m_cameraFront = glm::vec3(
-		cos(-m_transform->m_localRotation.x) * sin(-m_transform->m_localRotation.y),
-		sin(m_transform->m_localRotation.x),
-		cos(-m_transform->m_localRotation.x) * cos(-m_transform->m_localRotation.y));*/
 	m_cameraFront = glm::normalize( glm::vec3(0.0f,0.0f,-1.0f) * glm::mat3(m_viewMatrix));
 
-	//m_viewMatrix = glm::lookAt(
-	//	m_transform->m_position,           // Camera is here
-	//	m_transform->m_position + m_cameraFront, // and looks here : at the same position, plus "direction"
-	//	UP                  // Head is up (set to 0,-1,0 to look upside-down)
-	//	);
-
-
 	glm::mat4 tmpMat = m_transform->m_modelMatrix;
-	/*tmpMat[3] = -tmpMat[3];
-	tmpMat[7] = -tmpMat[7];
-	tmpMat[11] = -tmpMat[11];*/
+
 	m_viewMatrix = glm::inverse (tmpMat);
-	
-
-
 }
+
+PhysicalComponent::PhysicalComponent(GameObject* _gameObject, string _tag) : Component(_gameObject, _tag) 
+{
+    this->m_transform = _gameObject->getComponent<Transform>();
+}
+PhysicalComponent::~PhysicalComponent()
+{
+    
+}
+
+void PhysicalComponent::update()
+{
+     glm::mat4 & modMat = m_transform->m_modelMatrix;
+     float * modMatArr = (float*)glm::value_ptr(modMat);
+     
+     
+     Kep::Quaternion q1;
+     q1.setEuler(Kep::Vector3(1.0f,0.0f,0.0f), 45.0f);
+     //Kep::Quaternion q2;
+     //q2.setEuler(0.0f, 0.0f, 0.0f);
+     
+     //q1 *= q2;
+     Kep::Matrix4 rotMat;
+     rotMat.setOrientationAndPos(q1, Kep::Vector3(0,0,0));
+    //      Kep:: Matrix4 rotMat(
+    //          1.0f, 0.0f, 0.0f, 20.0f,
+    //          0.0f, cos(angle*(3.14159265358979323846 / 180.0f)), -sin(angle*(3.14159265358979323846 / 180.0f)), 0.0f,
+    //          0.0f, sin(angle*(3.14159265358979323846 / 180.0f)), cos(angle*(3.14159265358979323846 / 180.0f)), 0.0f,
+    //          0.0f, 0.0f, 0.0f, 1.0f
+    //    );
+     
+     rotMat = rotMat.transpose();
+     //Kep::Quaternion q1;
+     //q1.rotateByVector(Kep::Vector3(20,0,0));
+     //mat1.setOrientationAndPos(q1, Kep::Vector3(0,0,0));
+     for(int i = 0; i<16; i++)
+         modMatArr[i] = rotMat.data[i];
+}
+
 
