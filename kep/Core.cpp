@@ -360,10 +360,12 @@ Matrix4::Matrix4(
     data[8] = _d8; data[9] = _d9; data[10] = _d10; data[11] = _d11;
     data[12] = _d12; data[13] = _d13; data[14] = _d14; data[15] = _d15;
 }
+
 Matrix4::~Matrix4()
 {
     
 }
+
 Vector3 Matrix4::operator*(const Vector3 & _vector) const
 {
     return Vector3(data[0]*_vector.m_x + data[1]*_vector.m_y + data[2]*_vector.m_z + data[3], 
@@ -438,6 +440,7 @@ real Matrix4::determinant() const
     
     return ((data[0]*m[0].determinant()) - (data[1]*m[1].determinant()) + (data[2]*m[2].determinant()) - (data[3]*m[3].determinant()));
 }
+
 Matrix4 Matrix4::transpose() const
 {
     return Matrix4(
@@ -447,6 +450,7 @@ Matrix4 Matrix4::transpose() const
         data[3], data[7], data[11], data[15]
     );
 }
+
 Matrix4 Matrix4::cofactor() const
 {
     Matrix3 m[16];
@@ -548,6 +552,7 @@ Matrix4 Matrix4::cofactor() const
         -m[12].determinant(), m[13].determinant(), -m[14].determinant(), m[15].determinant()
     );
 }
+
 void Matrix4::setInverse(const Matrix4 &_m)
 {
     real det = _m.determinant();
@@ -594,6 +599,7 @@ void Matrix4::setOrientationAndPos(const Quaternion &_q, const Vector3 &_pos)
     data[10] = 1 - (2*_q.i*_q.i + 2*_q.j*_q.j);
     data[11] = _pos.m_z;
 }
+
 Vector3 Matrix4::transformInverseDirection(const Vector3 &_vector) const
 {
     return Vector3(
@@ -637,5 +643,6 @@ void Matrix4::dump()
            data[12], data[13], data[14], data[15]           
     );
 }
+
 
 

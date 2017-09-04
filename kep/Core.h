@@ -139,4 +139,16 @@ namespace Kep
         
     };
     
+    inline Vector3 localToWorld(const Vector3 &_local, const Matrix4 &_transform)
+    {
+        return _transform * _local;
+    }
+    inline Vector3 worldToLocal(const Vector3 &_world, const Matrix4 &_transform)
+    {
+        Matrix4 inverseTransform;
+        inverseTransform.setInverse(_transform);
+        
+        return inverseTransform * _world;
+    }
+    
 }

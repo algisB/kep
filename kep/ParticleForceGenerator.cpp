@@ -2,7 +2,7 @@
 using namespace Kep;
 
 
-Kep::ParticleForceRegistry::ParticleForceRegistry()
+ParticleForceRegistry::ParticleForceRegistry()
 {
 }
 

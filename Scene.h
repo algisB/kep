@@ -20,6 +20,9 @@
 #include "Particle.h"
 #include "ParticleForceGenerator.h"
 #include "ParticleWorld.h"
+
+#include "RigidBody.h"
+#include "ForceGenerator.h"
 #define CAM_SPEED 10.0f
 
 class Scene
@@ -53,29 +56,34 @@ protected:
 	GameObject * empty[10];
     
     //physics engine//////////////////////
-    Kep::Particle * part[10];
+    //Kep::Particle * part[10];
     
-    Kep::ParticleForceRegistry * pfReg;
+    //Kep::ParticleForceRegistry * pfReg;
     
-    Kep::ParticleGravity * pgGen;
+    //Kep::ParticleGravity * pgGen;
     
-    Kep::ParticleDrag * pdGen;
+    //Kep::ParticleDrag * pdGen;
     
-    Kep::ParticleSpring * psGen;
+    //Kep::ParticleSpring * psGen;
     
-    Kep::ParticleAnchoredSpring * pasGen;
+    //Kep::ParticleAnchoredSpring * pasGen;
     
-    Kep::ParticleFakeSpring * pfsGen;
+    //Kep::ParticleFakeSpring * pfsGen;
     
-    Kep::ParticleWorld * pWorld;
+    //Kep::ParticleWorld * pWorld;
     
     
-    Kep::ParticleContactRegistry * pcReg;
-    Kep::ParticleContactResolver * pcRes;
-    Kep::ParticleLink * link1;
-    Kep::Matrix4 mat1;
+    //Kep::ParticleContactRegistry * pcReg;
+    //Kep::ParticleContactResolver * pcRes;
+    //Kep::ParticleLink * link1;
     
-    Kep::Quaternion q1;
+    Kep::RigidBody * body[10];
+    Kep::ForceRegistry * fReg;
+    
+    Kep::Gravity * gGen;
+    Kep::Drag * dGen;
+    
+    
     
     ///////////////////////////////////////
 	vector<Light*> lightObjects;

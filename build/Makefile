@@ -52,6 +52,9 @@ ParticleWorld.o : ../kep/ParticleWorld.cpp ../kep/ParticleWorld.h
 	
 RigidBody.o : ../kep/RigidBody.cpp ../kep/RigidBody.h
 	$(CC) -c ../kep/RigidBody.cpp -I ../
+	
+ForceGenerator.o : ../kep/ForceGenerator.cpp ../kep/ForceGenerator.h
+	$(CC) -c ../kep/ForceGenerator.cpp -I ../
 #-------------------------------------------------------------
 
 Scene.o : ../Scene.cpp ../Scene.h
@@ -66,8 +69,8 @@ Main.o : ../Main.cpp
 
 
 #linking
-all: Main.o glew.o Scene.o  InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o ParticleForceGenerator.o ParticleContact.o ParticleLink.o ParticleWorld.o RigidBody.o
-	$(CC) -o ../bin/kek-engine-v2 Main.o glew.o Scene.o InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o ParticleForceGenerator.o ParticleContact.o ParticleLink.o ParticleWorld.o RigidBody.o -rdynamic -L ../SDL2_image/libs -Wl,-Bstatic -lSDL2_image -Wl,-Bdynamic -lSDL2 -lGL -lm -lstdc++
+all: Main.o glew.o Scene.o  InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o ParticleForceGenerator.o ParticleContact.o ParticleLink.o ParticleWorld.o RigidBody.o ForceGenerator.o
+	$(CC) -o ../bin/kek-engine-v2 Main.o glew.o Scene.o InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o ParticleForceGenerator.o ParticleContact.o ParticleLink.o ParticleWorld.o RigidBody.o ForceGenerator.o -rdynamic -L ../SDL2_image/libs -Wl,-Bstatic -lSDL2_image -Wl,-Bdynamic -lSDL2 -lGL -lm -lstdc++
 	#$(CC) -o softRend Main.o glew.o Scene.o InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o ../SDL2libs/libSDL2.so -lm -lstdc++ -lGL
 
 clean:
