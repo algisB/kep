@@ -14,7 +14,7 @@ namespace Kep
         Vector3 angularVelocity;
         
         Vector3 acceleration;
-        Vector3 angularAcceleration;
+
         
         Vector3 forceAccum;
         Vector3 torqueAccum;
@@ -27,7 +27,7 @@ namespace Kep
         
 
         
-        RigidBody(Vector3 _position = Vector3(0.0f,0.0f,0.0f), real _mass = 1.0f);
+        RigidBody(Vector3 _position = Vector3(0,0,0), Quaternion _orientation = Quaternion(0,0,0,0), real _mass = 1.0f);
         void calculateDerivedData();
         void setInertiaTensor(const Matrix3 &_inertiaTensor);
         
@@ -37,6 +37,7 @@ namespace Kep
                                     const Matrix4 &_rotmat);
         
         void addForce(const Vector3 &_force);
+        void addTorque(const Vector3 &_torque);
         void addForceAtPoint(const Vector3 &_force,
                              const Vector3 &_point);
         void addForceAtBodyPoint(const Vector3 &_force,

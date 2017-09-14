@@ -47,14 +47,15 @@ ParticleContact.o : ../kep/ParticleContact.cpp ../kep/ParticleContact.h
 ParticleLink.o : ../kep/ParticleLink.cpp ../kep/ParticleLink.h
 	$(CC) -c ../kep/ParticleLink.cpp -I ../
 	
-ParticleWorld.o : ../kep/ParticleWorld.cpp ../kep/ParticleWorld.h
-	$(CC) -c ../kep/ParticleWorld.cpp -I ../
-	
 RigidBody.o : ../kep/RigidBody.cpp ../kep/RigidBody.h
 	$(CC) -c ../kep/RigidBody.cpp -I ../
 	
 ForceGenerator.o : ../kep/ForceGenerator.cpp ../kep/ForceGenerator.h
 	$(CC) -c ../kep/ForceGenerator.cpp -I ../
+
+World.o : ../kep/World.cpp ../kep/World.h
+	$(CC) -c ../kep/World.cpp -I ../
+	
 #-------------------------------------------------------------
 
 Scene.o : ../Scene.cpp ../Scene.h
@@ -67,10 +68,12 @@ Main.o : ../Main.cpp
 	$(CC) -c ../Main.cpp -I ../ -I ../SDL2/include -I ../glm/glm -I ../glm/glm/gtc -I ../glm/glm/gtx -I ../SDL2_image -I ../kep/
 	
 
+	
+
 
 #linking
-all: Main.o glew.o Scene.o  InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o ParticleForceGenerator.o ParticleContact.o ParticleLink.o ParticleWorld.o RigidBody.o ForceGenerator.o
-	$(CC) -o ../bin/kek-engine-v2 Main.o glew.o Scene.o InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o ParticleForceGenerator.o ParticleContact.o ParticleLink.o ParticleWorld.o RigidBody.o ForceGenerator.o -rdynamic -L ../SDL2_image/libs -Wl,-Bstatic -lSDL2_image -Wl,-Bdynamic -lSDL2 -lGL -lm -lstdc++
+all: Main.o glew.o Scene.o  InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o ParticleForceGenerator.o ParticleContact.o ParticleLink.o RigidBody.o ForceGenerator.o World.o
+	$(CC) -o ../bin/kek-engine-v2 Main.o glew.o Scene.o InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o Particle.o Core.o ParticleForceGenerator.o ParticleContact.o ParticleLink.o RigidBody.o ForceGenerator.o World.o -rdynamic -L ../SDL2_image/libs -Wl,-Bstatic -lSDL2_image -Wl,-Bdynamic -lSDL2 -lGL -lm -lstdc++
 	#$(CC) -o softRend Main.o glew.o Scene.o InputManager.o EventSubscriber.o Event.o EventHandler.o Component.o GameObject.o Light.o Mesh.o Obj2.o ShaderManager.o ../SDL2libs/libSDL2.so -lm -lstdc++ -lGL
 
 clean:

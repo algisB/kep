@@ -71,9 +71,11 @@ namespace Kep
         };
         
         Quaternion(real _r = 0.0f, real _i = 0.0f, real _j = 0.0f, real _k = 0.0f);
+        Quaternion(Vector3 _axis, real _angle);
         ~Quaternion();
         void normalize();
         void operator *= (const Quaternion &_multiplier);
+        Quaternion operator * (const Quaternion &_multiplier);
         void rotateByVector(const Vector3 &_vector);
         void addScaledVector(const Vector3 &_vector, real _scale);
         void setEuler(Vector3 _axis, real _angle);
@@ -93,7 +95,7 @@ namespace Kep
         
         Matrix3 operator*(const Matrix3 &_o) const;
         
-        
+        Vector3 operator*(const Vector3 &_vector) const;
         
         real determinant() const;
         Matrix3 transpose() const;

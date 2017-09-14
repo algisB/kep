@@ -8,6 +8,9 @@
 #include "ShaderManager.h"
 #include "SETTINGS.h"
 #include "kep/Core.h"
+#include "kep/RigidBody.h"
+#include "kep/ForceGenerator.h"
+#include "kep/World.h"
 //
 
 class GameObject;
@@ -104,9 +107,12 @@ public:
 class PhysicalComponent : public Component
 {
 public:
-    Transform * m_transform;
+    Transform * p_transform;
+    Kep::World * p_physicsWorld;
+    Kep::RigidBody * m_body;
+
     
-    PhysicalComponent(GameObject *_gameObject, string _tag);
+    PhysicalComponent(GameObject *_gameObject, string _tag, Kep::World * _physicsWorld, Kep::real _mass);
     ~PhysicalComponent();
     
     void update();

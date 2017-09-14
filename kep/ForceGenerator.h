@@ -45,7 +45,7 @@ namespace Kep
         virtual void updateForce(RigidBody * _rigidBody, real _duration);
     };
     
-    class Drag : public ForceGenerator
+    class LinearDrag : public ForceGenerator
     {
     public:
         //velocity drag coefficient
@@ -53,7 +53,19 @@ namespace Kep
         //velocity squared drag coefficient
         real m_k2;
 
-        Drag(real _k1, real _k2);
+        LinearDrag(real _k1, real _k2);
+        virtual void updateForce(RigidBody * _rigidBody, real _duration);
+    };
+    
+    class AngularDrag : public ForceGenerator
+    {
+    public:
+        //drag coefficient
+        real m_k1;
+        //squared drag coefficient
+        real m_k2;
+        
+        AngularDrag(real _k1, real _k2);
         virtual void updateForce(RigidBody * _rigidBody, real _duration);
     };
 

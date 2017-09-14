@@ -19,10 +19,10 @@
 #include "EventHandler.h"
 #include "Particle.h"
 #include "ParticleForceGenerator.h"
-#include "ParticleWorld.h"
+#include "kep/World.h"
 
-#include "RigidBody.h"
-#include "ForceGenerator.h"
+
+
 #define CAM_SPEED 10.0f
 
 class Scene
@@ -77,13 +77,14 @@ protected:
     //Kep::ParticleContactResolver * pcRes;
     //Kep::ParticleLink * link1;
     
-    Kep::RigidBody * body[10];
-    Kep::ForceRegistry * fReg;
+//     Kep::RigidBody * body[10];
+//     Kep::ForceRegistry * fReg;
+//     
+//     Kep::Gravity * gGen;
+//     Kep::Drag * dGen;
     
-    Kep::Gravity * gGen;
-    Kep::Drag * dGen;
     
-    
+    Kep::World * physicsWorld;
     
     ///////////////////////////////////////
 	vector<Light*> lightObjects;

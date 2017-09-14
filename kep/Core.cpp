@@ -114,6 +114,10 @@ Quaternion::Quaternion(real _r, real _i, real _j, real _k)
     j = _j;
     k = _k;
 }
+Quaternion::Quaternion(Vector3 _axis, real _angle)
+{
+    setEuler(_axis, _angle);
+}
 Quaternion::~Quaternion()
 {
 }
@@ -148,6 +152,25 @@ void Quaternion::operator*= (const Quaternion &_multiplier)
         
     k = q.r*_multiplier.k + q.k*_multiplier.r +
         q.i*_multiplier.j - q.j*_multiplier.i;
+}
+
+Quaternion Quaternion::operator * (const Quaternion &_multiplier)
+{
+        Quaternion q = *this;
+        Quaternion f; 
+    f.r = q.r*_multiplier.r - q.i*_multiplier.i -
+        q.j*_multiplier.j - q.k*_multiplier.k;
+        
+    f.i = q.r*_multiplier.i + q.i*_multiplier.r + 
+        q.j*_multiplier.k - q.k*_multiplier.j;
+        
+    f.j = q.r*_multiplier.j + q.j*_multiplier.r +
+        q.k*_multiplier.i - q.i*_multiplier.k;
+        
+    f.k = q.r*_multiplier.k + q.k*_multiplier.r +
+        q.i*_multiplier.j - q.j*_multiplier.i;
+        
+        return f;
 }
 
 void Quaternion::rotateByVector(const Vector3 &_vector)
@@ -244,6 +267,14 @@ Matrix3 Matrix3::operator*(const Matrix3 &_o) const
     return result;
 }
 
+Vector3 Matrix3::operator*(const Vector3 &_vector) const
+{
+    return Vector3(
+        data[0]*_vector.m_x + data[1]*_vector.m_y + data[2]*_vector.m_z,
+        data[3]*_vector.m_x + data[4]*_vector.m_y + data[5]*_vector.m_z,
+        data[6]*_vector.m_x + data[7]*_vector.m_y + data[8]*_vector.m_z
+    );
+}
 real Matrix3::determinant() const
 {
 //     return (
@@ -598,6 +629,11 @@ void Matrix4::setOrientationAndPos(const Quaternion &_q, const Vector3 &_pos)
     data[9] = 2*_q.j*_q.k - 2*_q.i*_q.r;
     data[10] = 1 - (2*_q.i*_q.i + 2*_q.j*_q.j);
     data[11] = _pos.m_z;
+    
+    data[12] = 0.0f;
+    data[13] = 0.0f;
+    data[14] = 0.0f;
+    data[15] = 1.0f;
 }
 
 Vector3 Matrix4::transformInverseDirection(const Vector3 &_vector) const

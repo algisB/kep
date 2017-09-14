@@ -2,30 +2,45 @@
 using namespace Kep;
 
 
-RigidBody::RigidBody(Vector3 _position, real _mass)
+RigidBody::RigidBody(Vector3 _position, Quaternion _orientation, real _mass)
 {
     position = _position;
     
     velocity = Vector3(0.0f, 0.0f, 0.0f);
     acceleration = Vector3(0.0f, 0.0f, 0.0f);
-    
     forceAccum = Vector3(0.0f, 0.0f, 0.0f);
     
-    //TODO: rot
+    orientation = _orientation;
+    angularVelocity = Vector3(0.0f, 0.0f, 0.0f);
+    torqueAccum = Vector3(0.0f, 0.0f, 0.0f);
     
     
     if(_mass > 0.0f)
         inverseMass = 1.0f/_mass;
     else
         inverseMass = 0.0f;
+    
+    //TODO this will depend on the shape of the object 
+    inverseInertiaTensor = Matrix3(1,0,0,
+                                   0,1,0,
+                                   0,0,1);
+    
+    transformMatrix = Matrix4(1,0,0,0,
+                              0,1,0,0,
+                              0,0,1,0,
+                              0,0,0,1
+    );
 }
 void RigidBody::calculateDerivedData()
 {
+    orientation.normalize();
     transformMatrix.setOrientationAndPos(orientation, position);
     transformInertiaTensor(inverseInertiaTensorWorld,
                            orientation,
                            inverseInertiaTensor,
                            transformMatrix);
+    
+    transformMatrix = transformMatrix.transpose();//needed because openGL ..
 }
 
 void RigidBody::setInertiaTensor(const Matrix3 &_inertiaTensor)
@@ -103,11 +118,15 @@ void RigidBody::addForce(const Vector3 &_force)
 {
     forceAccum += _force;
 }
+void RigidBody::addTorque(const Vector3 &_torque)
+{
+    torqueAccum += _torque;
+}
 
 void RigidBody::addForceAtPoint(const Vector3 &_force,
                                 const Vector3 &_point)
 {
-    
+    //TODO.......
 }
 
 void RigidBody::addForceAtBodyPoint(const Vector3 &_force, const Vector3 &_point)
@@ -128,9 +147,16 @@ void RigidBody::integrate(real _duration)
     //update linear velocity 
     velocity.addScaledVector(resultAcc, _duration);
     
+    
+    
+    Vector3 angularAcceleration = inverseInertiaTensorWorld * torqueAccum;
+    angularVelocity.addScaledVector(angularAcceleration, _duration);
+    
+    orientation.addScaledVector(angularVelocity, _duration);
     //add drag
     //velocity *= real_pow(damping, _duration);//real_pow(m_damping, _duration);
     
+    calculateDerivedData();
     clearAccumulators();
 }
 void RigidBody::clearAccumulators()

@@ -37,13 +37,14 @@ void Gravity::updateForce(RigidBody * _rigidBody, real _duration)
     _rigidBody->addForce(m_gravity * _rigidBody->getMass());
     
 }
+
 //Drag
-Drag::Drag(real _k1, real _k2)
+LinearDrag::LinearDrag(real _k1, real _k2)
 {
     m_k1 = _k1;
     m_k2 = _k2;
 }
-void Drag::updateForce(RigidBody * _rigidBody, real _duration)
+void LinearDrag::updateForce(RigidBody * _rigidBody, real _duration)
 {
     Vector3 force;
     force = _rigidBody->velocity;
@@ -54,4 +55,23 @@ void Drag::updateForce(RigidBody * _rigidBody, real _duration)
     force *= -dragCoeff;
     _rigidBody->addForce(force);
     
+}
+
+AngularDrag::AngularDrag(real _k1, real _k2)
+{
+    m_k1 = _k1;
+    m_k2 = _k2;
+}
+
+void AngularDrag::updateForce(RigidBody * _rigidBody, real _duration)
+{
+    Vector3 torque;
+    torque = _rigidBody->angularVelocity;
+    
+    real dragCoeff = torque.magnitude();
+    dragCoeff = m_k1 * dragCoeff + m_k2 * dragCoeff * dragCoeff;
+    torque.normalize();
+    torque *= -dragCoeff;
+    
+    _rigidBody->addTorque(torque);
 }

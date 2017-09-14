@@ -153,9 +153,18 @@ void Camera::update()
 	m_viewMatrix = glm::inverse (tmpMat);
 }
 
-PhysicalComponent::PhysicalComponent(GameObject* _gameObject, string _tag) : Component(_gameObject, _tag) 
+
+
+PhysicalComponent::PhysicalComponent(GameObject* _gameObject, string _tag, Kep::World * _physicsWorld, Kep::real _mass) : Component(_gameObject, _tag) 
 {
-    this->m_transform = _gameObject->getComponent<Transform>();
+    p_transform = _gameObject->getComponent<Transform>();
+    p_physicsWorld = _physicsWorld;
+
+    
+    m_body = new Kep::RigidBody(Kep::Vector3(p_transform->m_localPosition.x, p_transform->m_localPosition.y,p_transform->m_localPosition.z), 
+                                Kep::Quaternion(Kep::Vector3(1,0,0), p_transform->m_localRotation.x) * Kep::Quaternion(Kep::Vector3(0,1,0), p_transform->m_localRotation.y) * Kep::Quaternion(Kep::Vector3(0,0,1), p_transform->m_localRotation.z),
+                                _mass);
+    p_physicsWorld->addRigidBody(m_body);
 }
 PhysicalComponent::~PhysicalComponent()
 {
@@ -164,31 +173,10 @@ PhysicalComponent::~PhysicalComponent()
 
 void PhysicalComponent::update()
 {
-     glm::mat4 & modMat = m_transform->m_modelMatrix;
-     float * modMatArr = (float*)glm::value_ptr(modMat);
-     
-     
-     Kep::Quaternion q1;
-     q1.setEuler(Kep::Vector3(1.0f,0.0f,0.0f), 45.0f);
-     //Kep::Quaternion q2;
-     //q2.setEuler(0.0f, 0.0f, 0.0f);
-     
-     //q1 *= q2;
-     Kep::Matrix4 rotMat;
-     rotMat.setOrientationAndPos(q1, Kep::Vector3(0,0,0));
-    //      Kep:: Matrix4 rotMat(
-    //          1.0f, 0.0f, 0.0f, 20.0f,
-    //          0.0f, cos(angle*(3.14159265358979323846 / 180.0f)), -sin(angle*(3.14159265358979323846 / 180.0f)), 0.0f,
-    //          0.0f, sin(angle*(3.14159265358979323846 / 180.0f)), cos(angle*(3.14159265358979323846 / 180.0f)), 0.0f,
-    //          0.0f, 0.0f, 0.0f, 1.0f
-    //    );
-     
-     rotMat = rotMat.transpose();
-     //Kep::Quaternion q1;
-     //q1.rotateByVector(Kep::Vector3(20,0,0));
-     //mat1.setOrientationAndPos(q1, Kep::Vector3(0,0,0));
-     for(int i = 0; i<16; i++)
-         modMatArr[i] = rotMat.data[i];
+    float * modMatArr = (float*)glm::value_ptr(p_transform->m_modelMatrix);
+    for(int i = 0; i<16; i++)
+        modMatArr[i] = m_body->transformMatrix.data[i];
+    
 }
 
 

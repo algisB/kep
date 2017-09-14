@@ -80,6 +80,9 @@ EventHandler * _eventHandler)
 	lightObjects.push_back(tgo->getComponent<Light>());
 	gameObjects.push_back(tgo);
     
+    
+    
+    physicsWorld = new Kep::World();
     /////////////////////////////////////////
 	//game objects///////////////////////////
     /////////////////////////////////////////
@@ -88,10 +91,13 @@ EventHandler * _eventHandler)
 	tgo->attachComponent(new Transform(tgo, "transform", &_mainCam->m_viewMatrix, &_mainCam->m_projectionMatrix));
 	tr = tgo->getComponent<Transform>();
 	tr->m_localPosition = glm::vec3(1.0f, 20.0f, 4.0f);
-	tr->m_localRotation = glm::vec3(0.0f,0.0f,0.0f);
-	tr->m_localScale = glm::vec3(1.0f, 1.0f, 1.0f);
+	tr->m_localRotation = glm::vec3(0.0f, 0.0f, 0.0f);
+	tr->m_localScale =    glm::vec3(1.0f, 1.0f, 1.0f);
     
-    //tgo->attachComponent(new PhysicalComponent(tgo, "PhysicalComponent"));
+    tgo->attachComponent(new PhysicalComponent(tgo, "PhysicalComponent", physicsWorld, 1.0f));
+    tgo->getComponent<PhysicalComponent>()->m_body->addForce(Kep::Vector3(100,0,0));
+    tgo->getComponent<PhysicalComponent>()->m_body->addTorque(Kep::Vector3(50,0,0));
+    
 	tgo->attachComponent(new Material(tgo, "material", &_texture3));
 	tgo->attachComponent(new MeshRenderer(tgo, "meshRenderer", _cube, shaderProgramSimple, MeshRenderer::WIRE));
 	gameObjects.push_back(tgo);
@@ -133,15 +139,15 @@ EventHandler * _eventHandler)
 	tgo->attachComponent(new MeshRenderer(tgo, "meshRenderer", _navMesh, shaderProgramSimple, MeshRenderer::WIRE));
 	gameObjects.push_back(tgo);
     
-    fReg = new Kep::ForceRegistry();
-    gGen = new Kep::Gravity(Kep::Vector3(0.0f, -9.81f, 0.0f));
-    dGen = new Kep::Drag(0.0f, 0.001f);
-    
-    body[0] = new Kep::RigidBody();
-    
-    fReg->add(body[0],gGen);
-    fReg->add(body[0],dGen);
-    body[0]->addForce(Kep::Vector3(10.0f,0,0));
+//     fReg = new Kep::ForceRegistry();
+//     gGen = new Kep::Gravity(Kep::Vector3(0.0f, -9.81f, 0.0f));
+//     dGen = new Kep::Drag(0.0f, 0.001f);
+//     
+//     body[0] = new Kep::RigidBody();
+//     
+//     fReg->add(body[0],gGen);
+//     fReg->add(body[0],dGen);
+//     body[0]->addForce(Kep::Vector3(10.0f,0,0));
     
     
     
@@ -226,12 +232,15 @@ void Scene::Update(float _deltaTs)
 	
 	float moveSpeed = 10.0f;
 
+    ///////////////////////////////////
     //physics engine stuff
-    fReg->updateForces(_deltaTs);
-    body[0]->integrate(_deltaTs);
-    body[0]->velocity.dump();
-
-    cube[0]->getComponent<Transform>()->m_localPosition = glm::vec3(body[0]->position.m_x, body[0]->position.m_y, body[0]->position.m_z);
+    ///////////////////////////////////
+    physicsWorld->update(_deltaTs);
+//     fReg->updateForces(_deltaTs);
+//     body[0]->integrate(_deltaTs);
+//     body[0]->velocity.dump();
+// 
+//     cube[0]->getComponent<Transform>()->m_localPosition = glm::vec3(body[0]->position.m_x, body[0]->position.m_y, body[0]->position.m_z);
     
 }
 
